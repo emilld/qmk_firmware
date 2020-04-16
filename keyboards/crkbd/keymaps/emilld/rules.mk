@@ -1,3 +1,7 @@
+RGBLIGHT_ENABLE = no
+# RGB_MATRIX_ENABLE = WS2812
+TAPPING_TERM = 400
+
 # If you want to change the display of OLED, you need to change here
 SRC +=  ./lib/glcdfont.c \
         ./lib/rgb_state_reader.c \
