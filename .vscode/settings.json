@@ -17,5 +17,6 @@
       "xstddef": "c",
       "type_traits": "c",
       "utility": "c"
-    }
+    },
+    "C_Cpp.inactiveRegionOpacity": 1
 }

@@ -1,6 +1,15 @@
-RGBLIGHT_ENABLE = no
+# RGBLIGHT_ENABLE = yes
 # RGB_MATRIX_ENABLE = WS2812
 TAPPING_TERM = 400
+
+BOOTMAGIC_ENABLE        = no
+MOUSEKEY_ENABLE         = no
+CONSOLE_ENABLE          = no
+COMMAND_ENABLE          = no
+EXTRAKEY_ENABLE            = yes # Audio control and System control(+450)
+
+RGBLIGHT_ENABLE         = no
+# RGB_MATRIX_ENABLE       = WS2812
 
 # If you want to change the display of OLED, you need to change here
 SRC +=  ./lib/glcdfont.c \
