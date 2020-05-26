@@ -17,6 +17,7 @@ extern uint8_t is_master;
 #define _LOWER 1
 #define _RAISE 2
 #define _ADJUST 3
+#define _SNAKE 4
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -24,8 +25,7 @@ enum custom_keycodes {
   RAISE,
   ADJUST,
   BACKLIT,
-  RGBRST,
-  SNAKE
+  RGBRST
 };
 
 enum macro_keycodes {
@@ -76,7 +76,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      SNAKE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
+      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      DF(_SNAKE), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          LALT_T(KC_LGUI),   LOWER,  KC_SPC,     KC_ENT,   RAISE, KC_RALT \
+                                      //`--------------------------'  `--------------------------'
+  ),
+
+  [_SNAKE] = LAYOUT( \
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+        RESET,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_LEFT, XXXXXXX, XXXXXXX, KC_RIGHT, XXXXXXX, XXXXXXX,\
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      DF(_QWERTY), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           LALT_T(KC_LGUI),   LOWER,  KC_SPC,     KC_ENT,   RAISE, KC_RALT \
                                       //`--------------------------'  `--------------------------'
@@ -138,7 +150,10 @@ void matrix_render_user(struct CharacterMatrix *matrix) {
     //matrix_write_ln(matrix, read_host_led_state());
     //matrix_write_ln(matrix, read_timelog());
   } else {
-    matrix_write(matrix, read_logo());
+    // if (IS_LAYER_ON(_SNAKE))
+    //   matrix_clear(matrix);
+    // else
+      matrix_write(matrix, read_logo());
   }
 }
 
@@ -196,6 +211,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           layer_off(_ADJUST);
         }
         return false;
+    // case SNAKE:
+    //   if (record->event.pressed) {
+    //     layer_on(_SNAKE);
+    //   }
+    //   return false;
     case RGB_MOD:
       #ifdef RGBLIGHT_ENABLE
         if (record->event.pressed) {
