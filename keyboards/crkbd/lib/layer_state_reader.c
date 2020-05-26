@@ -18,6 +18,7 @@ const char *read_layer_state(void) {
   {
   case L_BASE:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Default");
+    // snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Snake");
     break;
   case L_RAISE:
     snprintf(layer_state_str, sizeof(layer_state_str), "Layer: Raise");
