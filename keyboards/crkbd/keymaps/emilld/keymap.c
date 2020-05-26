@@ -1,9 +1,9 @@
 #include QMK_KEYBOARD_H
 #include "keymap_danish.h"
 
-// #ifdef SNAKE_ENABLE
+#ifdef SNAKE_ENABLE
 #include "snake.h"
-// #endif
+#endif
 
 #ifdef RGBLIGHT_ENABLE
 //Following line allows macro to read current RGB settings
@@ -123,6 +123,10 @@ void matrix_init_user(void) {
     #ifdef SSD1306OLED
         iota_gfx_init(!has_usb());   // turns on the display
     #endif
+
+    #ifdef SNAKE_ENABLE
+      snake_init();
+    #endif
 }
 
 //SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
@@ -134,7 +138,7 @@ const char *read_logo(void);
 void set_keylog(uint16_t keycode, keyrecord_t *record);
 const char *read_keylog(void);
 const char *read_keylogs(void);
-void snake_frame(struct CharacterMatrix*);
+int snake_frame(struct CharacterMatrix*);
 
 // const char *read_mode_icon(bool swap);
 // const char *read_host_led_state(void);
@@ -188,6 +192,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // set_timelog();
   }
 
+  #ifdef SNAKE_ENABLE
+  if (IS_LAYER_ON(_SNAKE))
+  {
+    snake_key = keycode;
+    snake_key_pressed = record->event.pressed;
+  }
+  #endif
+
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
@@ -221,9 +233,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         return false;
     case SNAKE:
+      #ifdef SNAKE_ENABLE
       if (record->event.pressed) {
         layer_on(_SNAKE);
       }
+      #endif
       return false;
     case RGB_MOD:
       #ifdef RGBLIGHT_ENABLE
