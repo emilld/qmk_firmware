@@ -1,5 +1,6 @@
 #pragma once
 #include "ssd1306.h"
+#include "timer.h"
 
 enum direction {
     INIT,
@@ -30,6 +31,7 @@ typedef struct
 
 uint16_t snake_key;
 bool snake_key_pressed;
+uint16_t last_time;
 
 int snake_init(void);
 int snake_frame(struct CharacterMatrix *matrix);
