@@ -27,11 +27,11 @@ void snake_init(void)
     currentDirection = RIGHT;
 
     // Spawn food
-    // food->x = 2;
-    // food->y = 1;
+    food->x = 2;
+    food->y = 1;
 
-    food->x = rand() % SNAKE_BOARD_WIDTH;
-    food->y = rand() % SNAKE_BOARD_HEIGHT;
+    // food->x = rand() % SNAKE_BOARD_WIDTH;
+    // food->y = rand() % SNAKE_BOARD_HEIGHT;
 
     return;
 }
@@ -197,7 +197,8 @@ int snake_update(void)
     // Add a new head.
     snake_push_front(move);
 
-    if (snake_found_food())
+    // if (snake_found_food())
+    if((snake_head->pos.x == 2) & (snake_head->pos.y == 2))
     {
         food->x = rand() % SNAKE_BOARD_WIDTH;
         food->y = rand() % SNAKE_BOARD_HEIGHT;
