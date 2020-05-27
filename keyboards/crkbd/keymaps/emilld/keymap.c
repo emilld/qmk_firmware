@@ -138,7 +138,7 @@ const char *read_logo(void);
 void set_keylog(uint16_t keycode, keyrecord_t *record);
 const char *read_keylog(void);
 const char *read_keylogs(void);
-int snake_frame(struct CharacterMatrix*);
+// int snake_frame(struct CharacterMatrix*);
 
 // const char *read_mode_icon(bool swap);
 // const char *read_host_led_state(void);
