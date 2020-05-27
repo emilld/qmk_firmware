@@ -39,7 +39,7 @@ SnakeNode * snake_head;
 
 enum direction currentDirection; // in global space
 
-int snake_init(void);
+void snake_init(void);
 void snake_clear(void);
 void snake_pop_back(void);
 void snake_push_front(vec2_t pos);

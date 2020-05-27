@@ -1,7 +1,7 @@
 #include "snake.h"
 #include <stdlib.h>
 
-int snake_init(void)
+void snake_init(void)
 {
     timer_init();
     last_time = timer_read();
@@ -19,8 +19,8 @@ int snake_init(void)
     // Spawn food
     food->x = 4;
     food->y = 1;
-
-    return 0;
+    
+    return;
 }
 
 void snake_clear(void)
@@ -186,8 +186,6 @@ int snake_update(void)
 
 int  snake_frame(struct CharacterMatrix *matrix)
 {
-    // matrix_write_ln(matrix, "snake");
-
     snake_update();
 
     // matrix_clear(matrix);
@@ -207,21 +205,34 @@ int  snake_frame(struct CharacterMatrix *matrix)
     
     char snake_string[24];
 
-    snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", snake_head->pos.x, snake_head->pos.y);
+    // snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", snake_head->pos.x, snake_head->pos.y);
+    // matrix_write_ln(matrix, snake_string);
+
+    // // Updates the snake positions
+    // SnakeNode * tmp = snake_head;
+    // while (tmp != NULL)
+    // {
+    //     matrix->display[tmp->pos.y][tmp->pos.x] = 0x2A;
+    //     // snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", tmp->pos.x, tmp->pos.y);
+    //     // matrix_write_ln(matrix, snake_string);
+    //     tmp = tmp->next;
+    // }
+
+    // // draw food
+    // matrix->display[food->y][food->x] = 0x02;
+
+    matrix->display[0][0] = 0x02;
+    matrix->display[1][1] = 0x02;
+    matrix->display[2][2] = 0x02;
+    matrix->display[2][3] = 0x02;
+
+    // food->x = 4;
+    // food->y = 2;
+
+    matrix->display[food->y][food->x] = 0x03;
+
+    snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", food->x, food->y);
     matrix_write_ln(matrix, snake_string);
-
-    // Updates the snake positions
-    SnakeNode * tmp = snake_head;
-    while (tmp != NULL)
-    {
-        matrix->display[tmp->pos.y][tmp->pos.x] = 0x2A;
-        // snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", tmp->pos.x, tmp->pos.y);
-        // matrix_write_ln(matrix, snake_string);
-        tmp = tmp->next;
-    }
-
-    // draw food
-    matrix->display[food->y][food->x] = 0x02;
     
     return 1;
 }
