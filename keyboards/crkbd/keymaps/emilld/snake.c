@@ -8,18 +8,31 @@ void snake_init(void)
 
     // Initialize the snake head and one body part
     // The snake is essentially a linked list
-    // snake_head->pos.x = (int)(DisplayWidth/2.) / 8. - 1;
-    // snake_head->pos.y = (int)(DisplayHeight/2.) / 8. - 1;
-    snake_head->pos.x = 3;
-    snake_head->pos.y = 1;
+    snake_head->pos.x = SNAKE_BOARD_WIDTH/2 - 1;
+    snake_head->pos.y = SNAKE_BOARD_HEIGHT/2 - 1;
+    // snake_head->pos.x = 3;
+    // snake_head->pos.y = 1;
     snake_head->next = NULL;
+
+    vec2_t tmp;
+
+    tmp.x = MatrixCols/2;
+    tmp.y = MatrixRows/2 - 1;
+    snake_push_front(tmp);
+    
+    // tmp.x = MatrixCols/2 + 1;
+    // tmp.y = MatrixRows/2 - 1;
+    // snake_push_front(tmp);
 
     currentDirection = RIGHT;
 
     // Spawn food
-    food->x = 4;
-    food->y = 1;
-    
+    // food->x = 2;
+    // food->y = 1;
+
+    food->x = rand() % SNAKE_BOARD_WIDTH;
+    food->y = rand() % SNAKE_BOARD_HEIGHT;
+
     return;
 }
 
@@ -148,7 +161,14 @@ vec2_t snake_move(void)
 
 bool snake_found_food(void)
 {
-    return (snake_head->pos.x == food->x) & (snake_head->pos.y == food->y);
+    if (food != NULL)
+    {
+        return (snake_head->pos.x == food->x) & (snake_head->pos.y == food->y);
+    }
+    else
+    {
+        return false;
+    }
 }
 
 int snake_update(void)
@@ -165,20 +185,29 @@ int snake_update(void)
 
     vec2_t move = snake_move();
 
+    // Check if new head is outside border of game
+    if ((move.x < 0) | (move.x > SNAKE_BOARD_WIDTH - 1) |
+        (move.y < 0) | (move.y > SNAKE_BOARD_HEIGHT - 1))
+    {
+        snake_clear();
+        snake_first_time = true; // restart the game
+        return 0;
+    }
+
     // Add a new head.
     snake_push_front(move);
 
-    // if (snake_found_food())
-    // {
-    //     food = NULL;
-    // }
-    // else
-    // {
-    //     // Delete the tail
-    //     snake_pop_back();
-    // }
+    if (snake_found_food())
+    {
+        food->x = rand() % SNAKE_BOARD_WIDTH;
+        food->y = rand() % SNAKE_BOARD_HEIGHT;
+    }
+    else
+    {
+        // Delete the tail
+        snake_pop_back();
+    }
     
-   
     last_time = timer_read();
 
     return 1;
@@ -186,6 +215,12 @@ int snake_update(void)
 
 int  snake_frame(struct CharacterMatrix *matrix)
 {
+    if (snake_first_time)
+    {
+        snake_init();
+        snake_first_time = false;
+    }
+
     snake_update();
 
     // matrix_clear(matrix);
@@ -203,36 +238,41 @@ int  snake_frame(struct CharacterMatrix *matrix)
 
     matrix_clear(matrix);
     
-    char snake_string[24];
+    // char snake_string[24];
 
     // snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", snake_head->pos.x, snake_head->pos.y);
     // matrix_write_ln(matrix, snake_string);
 
-    // // Updates the snake positions
-    // SnakeNode * tmp = snake_head;
-    // while (tmp != NULL)
+    // Updates the snake positions
+    SnakeNode * tmp = snake_head;
+    while (tmp != NULL)
+    {
+        matrix->display[tmp->pos.y][tmp->pos.x] = 0x2A;
+        // snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", tmp->pos.x, tmp->pos.y);
+        // matrix_write_ln(matrix, snake_string);
+        tmp = tmp->next;
+    }
+
+    // draw food
+    // if (food != NULL)
     // {
-    //     matrix->display[tmp->pos.y][tmp->pos.x] = 0x2A;
-    //     // snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", tmp->pos.x, tmp->pos.y);
-    //     // matrix_write_ln(matrix, snake_string);
-    //     tmp = tmp->next;
+        matrix->display[food->y][food->x] = 0x03;
     // }
 
-    // // draw food
-    // matrix->display[food->y][food->x] = 0x02;
-
-    matrix->display[0][0] = 0x02;
-    matrix->display[1][1] = 0x02;
-    matrix->display[2][2] = 0x02;
-    matrix->display[2][3] = 0x02;
+    // matrix->display[0][0] = 0x02;
+    // matrix->display[1][1] = 0x02;
+    // matrix->display[2][2] = 0x02;
+    // matrix->display[2][3] = 0x02;
 
     // food->x = 4;
     // food->y = 2;
 
-    matrix->display[food->y][food->x] = 0x03;
+    // matrix->display[food->y][food->x] = 0x03;
 
-    snprintf(snake_string, sizeof(snake_string), "x: %d, y: %d", food->x, food->y);
-    matrix_write_ln(matrix, snake_string);
+    // snprintf(snake_string, sizeof(snake_string), "x %d, y %d", food->x, food->y);
+    // snprintf(snake_string, sizeof(snake_string), "x%d y%d, x%d y%d", snake_head->pos.x, snake_head->pos.y, food->x, food->y);
+    // snprintf(snake_string, sizeof(snake_string), "x%d y%d, x%d y%d", snake_head->pos.x, snake_head->pos.y, rand() % SNAKE_BOARD_HEIGHT, rand() % SNAKE_BOARD_WIDTH);
+    // matrix_write_ln(matrix, snake_string);
     
     return 1;
 }

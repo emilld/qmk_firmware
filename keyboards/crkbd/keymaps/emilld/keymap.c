@@ -3,6 +3,8 @@
 
 #ifdef SNAKE_ENABLE
 #include "snake.h"
+#include <time.h>
+#include <stdio.h>
 #endif
 
 #ifdef RGBLIGHT_ENABLE
@@ -123,6 +125,10 @@ void matrix_init_user(void) {
     #ifdef SSD1306OLED
         iota_gfx_init(!has_usb());   // turns on the display
     #endif
+    #ifdef SNAKE_ENABLE
+      srand(time(NULL));
+      snake_first_time = false;
+    #endif
 }
 
 //SSD1306 OLED update loop, make sure to add #define SSD1306OLED in config.h
@@ -231,8 +237,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case SNAKE:
       #ifdef SNAKE_ENABLE
         if (record->event.pressed) {
+          // snake_init();
+          snake_first_time = true;
           layer_on(_SNAKE);
-          snake_init();
         }
       #endif
       return false;

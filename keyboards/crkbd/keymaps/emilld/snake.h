@@ -4,6 +4,9 @@
 #include "ssd1306.h"
 #include "timer.h"
 
+#define SNAKE_BOARD_HEIGHT MatrixRows
+#define SNAKE_BOARD_WIDTH MatrixCols
+
 enum direction {
     NONE,
     UP,
@@ -36,10 +39,13 @@ bool snake_key_pressed;
 uint16_t last_time;
 
 SnakeNode * snake_head;
+vec2_t * food;
 
 enum direction currentDirection; // in global space
 
+bool snake_first_time;
 void snake_init(void);
+
 void snake_clear(void);
 void snake_pop_back(void);
 void snake_push_front(vec2_t pos);
@@ -48,8 +54,6 @@ int snake_frame(struct CharacterMatrix *matrix);
 void snake_set_direction(uint16_t keycode);
 vec2_t snake_move(void);
 bool snake_found_food(void);
-
-vec2_t * food;
 
 // vec2_t get_direction_vec(enum direction);
 
