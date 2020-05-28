@@ -1,5 +1,5 @@
 #include "snake.h"
-#include <stdlib.h>
+#include "stdlib.h"
 
 void snake_init(void)
 {
@@ -27,14 +27,21 @@ void snake_init(void)
     currentDirection = RIGHT;
 
     // Spawn food
-    food->x = 2;
-    food->y = 1;
+    // snake_food->x = 2;
+    // snake_food->y = 1;
 
-    // food->x = rand() % SNAKE_BOARD_WIDTH;
-    // food->y = rand() % SNAKE_BOARD_HEIGHT;
+    // snake_food->x = rand() % SNAKE_BOARD_WIDTH;
+    // snake_food->y = rand() % SNAKE_BOARD_HEIGHT;
+    // snake_place_food();
 
     return;
 }
+
+// void snake_place_food(void)
+// {
+//     snake_food->x = 2;
+//     snake_food->y = 2;
+// }
 
 void snake_clear(void)
 {
@@ -159,17 +166,17 @@ vec2_t snake_move(void)
     return move;
 }
 
-bool snake_found_food(void)
-{
-    if (food != NULL)
-    {
-        return (snake_head->pos.x == food->x) & (snake_head->pos.y == food->y);
-    }
-    else
-    {
-        return false;
-    }
-}
+// bool snake_found_food(void)
+// {
+//     if (snake_food != NULL)
+//     {
+//         return (snake_head->pos.x == snake_food->x) && (snake_head->pos.y == snake_food->y);
+//     }
+//     else
+//     {
+//         return false;
+//     }
+// }
 
 int snake_update(void)
 {
@@ -200,8 +207,7 @@ int snake_update(void)
     // if (snake_found_food())
     if((snake_head->pos.x == 2) & (snake_head->pos.y == 2))
     {
-        food->x = rand() % SNAKE_BOARD_WIDTH;
-        food->y = rand() % SNAKE_BOARD_HEIGHT;
+        // snake_place_food();
     }
     else
     {
@@ -220,6 +226,11 @@ int  snake_frame(struct CharacterMatrix *matrix)
     {
         snake_init();
         snake_first_time = false;
+        
+        // snake_food->x = rand() % SNAKE_BOARD_WIDTH;
+        // snake_food->y = rand() % SNAKE_BOARD_HEIGHT;
+        // snake_food->x = 4;
+        // snake_food->y = 2;
     }
 
     snake_update();
@@ -254,10 +265,10 @@ int  snake_frame(struct CharacterMatrix *matrix)
         tmp = tmp->next;
     }
 
-    // draw food
-    // if (food != NULL)
+    // // draw food
+    // if (snake_food != NULL)
     // {
-        matrix->display[food->y][food->x] = 0x03;
+    //     matrix->display[snake_food->y][snake_food->x] = 0x03;
     // }
 
     // matrix->display[0][0] = 0x02;
@@ -265,14 +276,15 @@ int  snake_frame(struct CharacterMatrix *matrix)
     // matrix->display[2][2] = 0x02;
     // matrix->display[2][3] = 0x02;
 
-    // food->x = 4;
-    // food->y = 2;
+    // snake_food->x = 4;
+    // snake_food->y = 2;
 
     // matrix->display[food->y][food->x] = 0x03;
 
-    // snprintf(snake_string, sizeof(snake_string), "x %d, y %d", food->x, food->y);
+    // snprintf(snake_string, sizeof(snake_string), "x%d y%d", snake_food->x, snake_food->y);
     // snprintf(snake_string, sizeof(snake_string), "x%d y%d, x%d y%d", snake_head->pos.x, snake_head->pos.y, food->x, food->y);
     // snprintf(snake_string, sizeof(snake_string), "x%d y%d, x%d y%d", snake_head->pos.x, snake_head->pos.y, rand() % SNAKE_BOARD_HEIGHT, rand() % SNAKE_BOARD_WIDTH);
+    // snprintf(snake_string, sizeof(snake_string), "x%d y%d", rand() % SNAKE_BOARD_WIDTH, rand() % SNAKE_BOARD_HEIGHT);
     // matrix_write_ln(matrix, snake_string);
     
     return 1;

@@ -5,7 +5,7 @@
 #include "timer.h"
 
 #define SNAKE_BOARD_HEIGHT MatrixRows
-#define SNAKE_BOARD_WIDTH MatrixCols
+#define SNAKE_BOARD_WIDTH  MatrixCols
 
 enum direction {
     NONE,
@@ -17,8 +17,8 @@ enum direction {
 
 typedef struct
 {
-    int x;
-    int y;
+    uint8_t x;
+    uint8_t y;
 } vec2_t;
 
 typedef struct snake_node_
@@ -39,7 +39,7 @@ bool snake_key_pressed;
 uint16_t last_time;
 
 SnakeNode * snake_head;
-vec2_t * food;
+vec2_t * snake_food;
 
 enum direction currentDirection; // in global space
 
@@ -54,6 +54,8 @@ int snake_frame(struct CharacterMatrix *matrix);
 void snake_set_direction(uint16_t keycode);
 vec2_t snake_move(void);
 bool snake_found_food(void);
+
+void snake_place_food(void);
 
 // vec2_t get_direction_vec(enum direction);
 

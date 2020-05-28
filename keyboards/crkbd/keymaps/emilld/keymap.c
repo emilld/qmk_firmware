@@ -3,8 +3,8 @@
 
 #ifdef SNAKE_ENABLE
 #include "snake.h"
-#include <time.h>
-#include <stdio.h>
+// #include <time.h>
+// #include <stdio.h>
 #endif
 
 #ifdef RGBLIGHT_ENABLE
@@ -126,7 +126,6 @@ void matrix_init_user(void) {
         iota_gfx_init(!has_usb());   // turns on the display
     #endif
     #ifdef SNAKE_ENABLE
-      srand(time(NULL));
       snake_first_time = false;
     #endif
 }
