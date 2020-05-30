@@ -3,6 +3,7 @@
 
 #include "ssd1306.h"
 #include "timer.h"
+#include "stdlib.h"
 
 #define SNAKE_BOARD_HEIGHT MatrixRows
 #define SNAKE_BOARD_WIDTH  MatrixCols
@@ -53,8 +54,8 @@ int snake_update(void);
 int snake_frame(struct CharacterMatrix *matrix);
 void snake_set_direction(uint16_t keycode);
 vec2_t snake_move(void);
-bool snake_found_food(void);
 
+bool snake_found_food(void);
 void snake_place_food(void);
 
 // vec2_t get_direction_vec(enum direction);

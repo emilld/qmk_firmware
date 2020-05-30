@@ -1,11 +1,12 @@
 #include "snake.h"
-#include "stdlib.h"
 
 void snake_init(void)
 {
     timer_init();
     last_time = timer_read();
 
+    snake_head = (SnakeNode*)malloc(sizeof(SnakeNode));
+    snake_food = (vec2_t*)malloc(sizeof(vec2_t));
     // Initialize the snake head and one body part
     // The snake is essentially a linked list
     snake_head->pos.x = SNAKE_BOARD_WIDTH/2 - 1;
@@ -32,16 +33,16 @@ void snake_init(void)
 
     // snake_food->x = rand() % SNAKE_BOARD_WIDTH;
     // snake_food->y = rand() % SNAKE_BOARD_HEIGHT;
-    // snake_place_food();
+    snake_place_food();
 
     return;
 }
 
-// void snake_place_food(void)
-// {
-//     snake_food->x = 2;
-//     snake_food->y = 2;
-// }
+void snake_place_food(void)
+{
+    snake_food->x = rand() % SNAKE_BOARD_WIDTH;
+    snake_food->y = rand() % SNAKE_BOARD_HEIGHT;
+}
 
 void snake_clear(void)
 {
@@ -166,17 +167,17 @@ vec2_t snake_move(void)
     return move;
 }
 
-// bool snake_found_food(void)
-// {
-//     if (snake_food != NULL)
-//     {
-//         return (snake_head->pos.x == snake_food->x) && (snake_head->pos.y == snake_food->y);
-//     }
-//     else
-//     {
-//         return false;
-//     }
-// }
+bool snake_found_food(void)
+{
+    if (snake_food != NULL)
+    {
+        return (snake_head->pos.x == snake_food->x) && (snake_head->pos.y == snake_food->y);
+    }
+    else
+    {
+        return false;
+    }
+}
 
 int snake_update(void)
 {
@@ -204,10 +205,10 @@ int snake_update(void)
     // Add a new head.
     snake_push_front(move);
 
-    // if (snake_found_food())
-    if((snake_head->pos.x == 2) & (snake_head->pos.y == 2))
+    if (snake_found_food())
+    // if((snake_head->pos.x == 2) & (snake_head->pos.y == 2))
     {
-        // snake_place_food();
+        snake_place_food();
     }
     else
     {
@@ -265,11 +266,11 @@ int  snake_frame(struct CharacterMatrix *matrix)
         tmp = tmp->next;
     }
 
-    // // draw food
-    // if (snake_food != NULL)
-    // {
-    //     matrix->display[snake_food->y][snake_food->x] = 0x03;
-    // }
+    // draw food
+    if (snake_food != NULL)
+    {
+        matrix->display[snake_food->y][snake_food->x] = 0x03;
+    }
 
     // matrix->display[0][0] = 0x02;
     // matrix->display[1][1] = 0x02;
