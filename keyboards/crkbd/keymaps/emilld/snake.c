@@ -4,6 +4,7 @@ void snake_init(void)
 {
     timer_init();
     last_time = timer_read();
+    snake_timer_period = 500;
 
     snake_head = (SnakeNode*)malloc(sizeof(SnakeNode));
     snake_food = (vec2_t*)malloc(sizeof(vec2_t));
@@ -40,8 +41,14 @@ void snake_init(void)
 
 void snake_place_food(void)
 {
-    snake_food->x = rand() % SNAKE_BOARD_WIDTH;
-    snake_food->y = rand() % SNAKE_BOARD_HEIGHT;
+    snake_food->x = -1;
+    snake_food->y = -1;
+
+    while (snake_in_collision(*snake_food))
+    {
+        snake_food->x = rand() % SNAKE_BOARD_WIDTH;
+        snake_food->y = rand() % SNAKE_BOARD_HEIGHT;
+    }
 }
 
 void snake_clear(void)
@@ -202,7 +209,7 @@ bool snake_in_collision(vec2_t next_head)
 
 int snake_update(void)
 {
-    if (timer_elapsed(last_time) < 500) // if time elapsed is larger than 500 ms, then do something
+    if (timer_elapsed(last_time) < snake_timer_period) // if time elapsed is larger than 500 ms, then do something
     {
         return 0;
     }
@@ -231,6 +238,11 @@ int snake_update(void)
     // if((snake_head->pos.x == 2) & (snake_head->pos.y == 2))
     {
         snake_place_food();
+
+        if (snake_timer_period > 100)
+        {
+            snake_timer_period -= 10;
+        }
     }
     else
     {

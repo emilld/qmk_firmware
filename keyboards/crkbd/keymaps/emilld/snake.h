@@ -61,6 +61,8 @@ bool snake_in_collision(vec2_t next_head);
 bool snake_found_food(void);
 void snake_place_food(void);
 
+uint16_t snake_timer_period;
+
 // vec2_t get_direction_vec(enum direction);
 
 #endif
