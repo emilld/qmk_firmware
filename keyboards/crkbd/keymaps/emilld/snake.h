@@ -56,6 +56,8 @@ int snake_frame(struct CharacterMatrix *matrix);
 void snake_set_direction(uint16_t keycode);
 vec2_t snake_move(void);
 
+bool snake_in_collision(vec2_t next_head);
+
 bool snake_found_food(void);
 void snake_place_food(void);
 

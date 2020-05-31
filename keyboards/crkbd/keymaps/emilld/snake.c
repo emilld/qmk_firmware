@@ -179,6 +179,27 @@ bool snake_found_food(void)
     }
 }
 
+bool snake_in_collision(vec2_t next_head)
+{
+    bool col = (next_head.x < 0) | (next_head.x > SNAKE_BOARD_WIDTH - 1) |
+               (next_head.y < 0) | (next_head.y > SNAKE_BOARD_HEIGHT - 1);
+
+    // Check for collision with self
+    SnakeNode * tmp = snake_head;
+
+    while (tmp->next != NULL)
+    {
+        if ((next_head.x == tmp->next->pos.x) && (next_head.y == tmp->next->pos.y))
+        {
+            col = true;
+            break;
+        }
+        tmp = tmp->next;
+    }
+    
+    return col;
+}
+
 int snake_update(void)
 {
     if (timer_elapsed(last_time) < 500) // if time elapsed is larger than 500 ms, then do something
@@ -196,8 +217,7 @@ int snake_update(void)
     vec2_t move = snake_move();
 
     // Check if new head is outside border of game
-    if ((move.x < 0) | (move.x > SNAKE_BOARD_WIDTH - 1) |
-        (move.y < 0) | (move.y > SNAKE_BOARD_HEIGHT - 1))
+    if (snake_in_collision(move))
     {
         snake_clear();
         snake_first_time = true; // restart the game
