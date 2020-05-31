@@ -36,7 +36,8 @@ typedef struct snake_node_
 // } SnakeHead;
 
 uint16_t snake_key;
-bool snake_key_pressed;
+bool snake_new_key;
+// bool snake_key_pressed;
 uint16_t last_time;
 
 SnakeNode * snake_head;

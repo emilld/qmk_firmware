@@ -197,7 +197,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (IS_LAYER_ON(_SNAKE))
   {
     snake_key = keycode;
-    snake_key_pressed = record->event.pressed;
+    if (record->event.pressed)
+    {
+      snake_new_key = true;
+    }
   }
   #endif
 

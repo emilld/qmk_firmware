@@ -186,8 +186,10 @@ int snake_update(void)
         return 0;
     }
 
-    if (snake_key_pressed)
+    // if (snake_key_pressed)
+    if (snake_new_key)
     {
+        snake_new_key = false;
         snake_set_direction(snake_key);
     }
 
