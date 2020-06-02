@@ -241,7 +241,7 @@ int snake_update(void)
 
         if (snake_timer_period > 100)
         {
-            snake_timer_period -= 10;
+            snake_timer_period -= 20;
         }
     }
     else
