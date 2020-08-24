@@ -43,6 +43,9 @@ uint16_t last_time;
 SnakeNode * snake_head;
 vec2_t * snake_food;
 
+int snake_score;
+// int high_score[5];
+
 enum direction currentDirection; // in global space
 
 bool snake_first_time;

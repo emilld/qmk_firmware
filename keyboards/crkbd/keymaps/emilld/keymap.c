@@ -112,6 +112,7 @@ void persistent_default_layer_set(uint16_t default_layer) {
 void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
   if (IS_LAYER_ON(layer1) && IS_LAYER_ON(layer2)) {
     layer_on(layer3);
+    // rgblight_mode(21);
   } else {
     layer_off(layer3);
   }
@@ -161,7 +162,9 @@ void matrix_render_user(struct CharacterMatrix *matrix) {
     //matrix_write_ln(matrix, read_timelog());
   } else {
     if (IS_LAYER_ON(_SNAKE)){
+      #ifdef SNAKE_ENABLE
       snake_frame(matrix);
+      #endif
     }
     else
     {

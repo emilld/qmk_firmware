@@ -223,7 +223,7 @@ int snake_update(void)
 
     vec2_t move = snake_move();
 
-    // Check if new head is outside border of game
+    // Check if new head is outside border of game or it hit itself.
     if (snake_in_collision(move))
     {
         snake_clear();
@@ -237,6 +237,8 @@ int snake_update(void)
     if (snake_found_food())
     // if((snake_head->pos.x == 2) & (snake_head->pos.y == 2))
     {
+        snake_score++;
+
         snake_place_food();
 
         if (snake_timer_period > 100)
@@ -255,12 +257,13 @@ int snake_update(void)
     return 1;
 }
 
-int  snake_frame(struct CharacterMatrix *matrix)
+int snake_frame(struct CharacterMatrix *matrix)
 {
     if (snake_first_time)
     {
         snake_init();
         snake_first_time = false;
+        snake_score = 0;
         
         // snake_food->x = rand() % SNAKE_BOARD_WIDTH;
         // snake_food->y = rand() % SNAKE_BOARD_HEIGHT;
@@ -299,6 +302,11 @@ int  snake_frame(struct CharacterMatrix *matrix)
         // matrix_write_ln(matrix, snake_string);
         tmp = tmp->next;
     }
+
+    // Draw score
+    char str[3];
+    sprintf(str, "%d", snake_score);
+    matrix_write(matrix, str);
 
     // draw food
     if (snake_food != NULL)
